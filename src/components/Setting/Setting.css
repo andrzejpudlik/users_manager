@@ -1,0 +1,18 @@
+.list_setting {
+  display: flex;
+  justify-content:first baseline;
+}
+
+.list_setting > p {
+  width: 20%;
+  margin: 0.8rem 0;
+}
+
+.form_setting_input {
+  width: 40%;
+  margin-left: 15%;
+}
+
+.form_setting_inputs {
+  width: 60%;
+}

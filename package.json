@@ -1,0 +1,46 @@
+{
+  "name": "admin-panel",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.1.5",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^10.4.9",
+    "@testing-library/user-event": "^12.7.3",
+    "axios": "^0.21.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-icons": "^3.11.0",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.3",
+    "styled-components": "^5.2.3",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "update": "npx msw init public --no-save",
+    "test": "react-scripts test",
+    "test:unit": "npm run test -- --watchAll=false",
+    "test:ci": "cross-env CI=true npm run test:unit",
+    "eject": "react-scripts eject",
+    "lint:js": "eslint ./src/**/*.js",
+    "lint": "eslint ./src/**/*.js"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
