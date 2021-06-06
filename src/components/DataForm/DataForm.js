@@ -1,5 +1,4 @@
 import React from 'react';
-import Axios from 'axios';
 
 import validate from './validateInfo';
 import useForm from './useForm';
@@ -8,24 +7,11 @@ import './DataForm.css';
 
 const DataForm = ({ user, changePersonalData }) => {
   const { handleChange, handleSubmit, values, errors } = useForm(
-    submitForm,
+    user,
+    changePersonalData,
     validate
   );
 
-  function submitForm() {
-    Axios.post("http://localhost:3001/personal_data", {
-      id_data: user[0].id,
-      firstname: values.firstname,
-      lastname: values.lastname,
-      phone: values.phone
-    }).then((response) => {
-      if (response.data.message) {
-        alert(response.data.message);
-      } else {
-        changePersonalData(true);
-      }
-    });
-  }
   return (
     <div className='form-container'>
       <form onSubmit={handleSubmit} className='form' noValidate>

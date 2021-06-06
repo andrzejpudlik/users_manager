@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import Axios from 'axios';
+import { useHistory } from 'react-router-dom';
 
-const useForm = (callback, validate) => {
+const useForm = validate => {
   const [values, setValues] = useState({
     username: '',
     email: '',
@@ -9,6 +11,8 @@ const useForm = (callback, validate) => {
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const history = useHistory();
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -28,10 +32,21 @@ const useForm = (callback, validate) => {
   useEffect(
     () => {
       if (Object.keys(errors).length === 0 && isSubmitting) {
-        callback();
+        Axios.post("http://localhost:3001/register", {
+          username: values.username,
+          email: values.email,
+          password: values.password
+        }).then((response) => {
+          if (response.data.message) {
+            console.log(response);
+            alert(response.data.message);
+          } else {
+            history.push('/login');
+          }
+        });
       }
     },
-    [errors, isSubmitting, callback]
+    [errors]
   );
 
   return { handleChange, handleSubmit, values, errors };

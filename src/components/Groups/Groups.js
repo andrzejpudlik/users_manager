@@ -33,17 +33,31 @@ function Groups() {
     });
   };
 
+  const deleteUserFromGroup = id => {
+    const confirmDeleteUserFromGroup = window.confirm("Czy na pewno chcesz usunąć użytkownika z grupy?");
+    if (confirmDeleteUserFromGroup) {
+      Axios.put("http://localhost:3001/remove/group/user", {
+        id: id
+      }).then((response) => {
+        if (response.data.message) {
+          alert(response.data.message);
+        } else {
+          setGroupUsers(groupUsers.filter((val) => {
+            return val.id !== id;
+          }));
+        };
+      });
+    }
+  }
+
   useEffect(() => {
     Axios.get("http://localhost:3001/groups").then((response) => {
       setGroupList(response.data);
     });
-  }, []);
-
-  useEffect(() => {
     Axios.get("http://localhost:3001/group/users").then((response) => {
       setGroupUsers(response.data.result);
     });
-  }, [groupUsers, groupList]);
+  }, []);
 
   useEffect(() => {
     Axios.get('http://localhost:3001/users')
@@ -60,23 +74,6 @@ function Groups() {
   const handleClick = id => {
     setGroupId(id);
     setIsOpen(true);
-  }
-
-  const deleteUserFromGroup = id => {
-    const confirmDeleteUserFromGroup = window.confirm("Czy na pewno chcesz usunąć użytkownika z grupy?");
-    if (confirmDeleteUserFromGroup) {
-      Axios.put("http://localhost:3001/remove/group/user", {
-        id: id
-      }).then((response) => {
-        if (response.data.message) {
-          alert(response.data.message);
-        } else {
-          setGroupUsers(groupUsers.filter((val) => {
-            return val.id !== id;
-          }));
-        };
-      });
-    }
   }
 
   const removeGroup = id_group => {
@@ -114,6 +111,8 @@ function Groups() {
         });
       }
   }, [userId]);
+
+  console.log('aaa');
 
   return (
     <div className="container">

@@ -1,6 +1,5 @@
 import React from 'react';
-import Axios from 'axios';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import validate from './validateInfo';
 import useForm from './useForm';
@@ -8,25 +7,8 @@ import useForm from './useForm';
 
 function RegisterForm() {
   const { handleChange, handleSubmit, values, errors } = useForm(
-    submitForm,
     validate
   );
-  const history = useHistory();
-
-  function submitForm() {
-    Axios.post("http://localhost:3001/register", {
-      username: values.username,
-      email: values.email,
-      password: values.password
-    }).then((response) => {
-      if (response.data.message) {
-        console.log(response);
-        alert(response.data.message);
-      } else {
-        history.push('/login');
-      }
-    });
-  };
 
   return (
     <div className='form-container'>

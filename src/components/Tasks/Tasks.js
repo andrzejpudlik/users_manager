@@ -11,22 +11,7 @@ function Tasks() {
   const [groupId, setGroupId] = useState(1);
   const [groupList, setGroupList] = useState([]);
   const [tasksList, setTasksList] = useState([]);
-
-  useEffect(() => {
-    Axios.get("http://localhost:3001/groups").then((response) => {
-      setGroupList(response.data);
-      setGroupId(response.data[0].id_group)
-    });
-  }, []);
-
-  useEffect(() => {
-    Axios.get("http://localhost:3001/tasks").then((response) => {
-      setTasksList(response.data);
-    });
-  }, [tasksList]);
-  
-  let maxDate = minDate.slice(0, 4) * 1 + 1;
-  maxDate = maxDate + "-12-31";
+  const [newTask, setNewTask] = useState(false);
 
   const addTask = () => {
     Axios.post("http://localhost:3001/task/create", {
@@ -34,23 +19,10 @@ function Tasks() {
       important: checked.toString(),
       date_finish: date,
       id_group: groupId
-    }).then((response) => {
-      console.log(response);
-      setTasksList([
-        ...tasksList, {
-          name_task: text,
-          important: checked.toString(),
-          date_finish: date,
-          id_group: groupId
-        }
-      ]);
+    }).then(() => {
+      setNewTask(!newTask);
     });
   };
-
-  const showAddTask = e => {
-    e.preventDefault();
-    setIsActive(!isActive);
-  }
 
   const deleteTask = id_task => {
     const confirmTask = window.confirm("Czy na pewno chcesz usunąć zadanie?");
@@ -67,6 +39,27 @@ function Tasks() {
       });
     }
   }
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/groups").then((response) => {
+      setGroupList(response.data);
+      setGroupId(response.data[0].id_group)
+    });
+  }, []);
+
+  useEffect(() => {
+    Axios.get("http://localhost:3001/tasks").then((response) => {
+      setTasksList(response.data);
+    });
+  }, [newTask]);
+  
+  const showAddTask = e => {
+    e.preventDefault();
+    setIsActive(!isActive);
+  }
+
+  let maxDate = minDate.slice(0, 4) * 1 + 1;
+  maxDate = maxDate + "-12-31";
 
   return (
     <div className="container">
@@ -132,20 +125,22 @@ function Tasks() {
             <li className="list_params_item">Data zakończenia</li>
             <li className="list_params_item">Akcje</li>
           </ul>
-
+          
           {tasksList.map((val) => {
-              if(value.id_group === val.id_group) {
-              return (
-                <ul className="list_users" key={val.id_task}>
-                  <li className="list-group-item">{val.name_task}</li>
-                  <li className="list-group-item">{val.important === 'false' ? 'Nie' : 'Tak'}</li>
-                  <li className="list-group-item">{val.date_finish}</li>
-                  <li className="list-group-item">
-                    <button onClick={() => deleteTask(val.id_task)}>Zakończ zadanie</button>
-                  </li>
-                </ul>
-              )
-            } 
+            
+            if(value.id_group === val.id_group) {
+            return (
+              <ul className="list_users" key={val.id_task}>
+                <li className="list-group-item">{val.name_task}</li>
+                <li className="list-group-item">{val.important === 'false' ? 'Nie' : 'Tak'}</li>
+                <li className="list-group-item">{val.date_finish}</li>
+                <li className="list-group-item">
+                  <button onClick={() => deleteTask(val.id_task)}>Zakończ zadanie</button>
+                </li>
+              </ul>
+            )} else {
+              <h2 className="list_users">Brak zadań</h2>
+            }
           })}
         </div>
       )
