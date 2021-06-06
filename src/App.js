@@ -14,13 +14,16 @@ function App() {
   const [loginStatus, setLoginStatus] = useState('');
   const [personalData, setPersonalData] = useState(false);
 
-  useEffect(async() => {
-    const response = await Axios.get('http://localhost:3001/login');
+  useEffect(() => {
+    async function fetchMyAPI() {
+      const response = await Axios.get('http://localhost:3001/login');
+      console.log(response);
         if (response.data.loggedIn === true) {
           setLoginStatus(response.data.user);
           console.log(response.data.user);
         };
-
+    }
+    fetchMyAPI();
   }, [personalData]);
   
   return (

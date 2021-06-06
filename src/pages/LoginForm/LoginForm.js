@@ -1,30 +1,14 @@
 import React from 'react';
-import Axios from 'axios';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import validate from './validateInfo';
 import useForm from './useForm';
 
 function LoginForm({ changePersonalData }) {
   const { handleChange, handleSubmit, values, errors } = useForm(
-    submitForm,
+    changePersonalData,
     validate
   );
-  const history = useHistory();
-
-  function submitForm() {
-    Axios.post("http://localhost:3001/login", {
-      username: values.usernameLogin,
-      password: values.passwordLogin
-    }).then((response) => {
-      if (response.data.message) {
-        alert(response.data.message);
-      } else {
-        changePersonalData(true);
-        history.push('/admin/dashboard');
-      }
-    });
-  }
 
   return (
     <>
